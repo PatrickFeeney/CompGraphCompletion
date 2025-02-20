@@ -283,29 +283,29 @@ aq_SO2_2023 = pd.read_csv(aq_SO2_2023_file)
 aq_SO2_2024_file = (aq_SO2_path + '/epa_aq_data_SO2_2024_georeferenced.csv')
 aq_SO2_2024 = pd.read_csv(aq_SO2_2024_file)
 
-# ##SVI
-# SVI_Path = 'mnt/c/Users/court/Documents/d3m_project/data/SVI/MA_SVI/SocialVulnerabilityIndex'
+##SVI
+SVI_Path = '/mnt/c/Users/court/Documents/d3m_project/data/SVI/MA_SVI/SocialVulnerabilityIndex'
             
-# svi_2000_file = (SVI_Path + '/Massachusetts_SVI_2000.csv')
-# svi_2000 =pd.read_csv(svi_2000_file)
+svi_2000_file = (SVI_Path + '/Massachusetts_SVI_2000.csv')
+svi_2000 =pd.read_csv(svi_2000_file)
 
-# svi_2010_file = (SVI_Path + '/Massachusetts_SVI_2010.csv')
-# svi_2010 =pd.read_csv(svi_2010_file)
+svi_2010_file = (SVI_Path + '/Massachusetts_SVI_2010.csv')
+svi_2010 =pd.read_csv(svi_2010_file)
 
-# svi_2014_file = (SVI_Path + '/Massachusetts_SVI_2014.csv')
-# svi_2014 =pd.read_csv(svi_2014_file)
+svi_2014_file = (SVI_Path + '/Massachusetts_SVI_2014.csv')
+svi_2014 =pd.read_csv(svi_2014_file)
 
-# svi_2016_file = (SVI_Path + '/Massachusetts_SVI_2016.csv')
-# svi_2016 =pd.read_csv(svi_2016_file)
+svi_2016_file = (SVI_Path + '/Massachusetts_SVI_2016.csv')
+svi_2016 =pd.read_csv(svi_2016_file)
 
-# svi_2018_file = (SVI_Path + '/Massachusetts_SVI_2018.csv')
-# svi_2018 =pd.read_csv(svi_2018_file)
+svi_2018_file = (SVI_Path + '/Massachusetts_SVI_2018.csv')
+svi_2018 =pd.read_csv(svi_2018_file)
 
-# svi_2020_file = (SVI_Path + '/Massachusetts_SVI_2020.csv')
-# svi_2020 =pd.read_csv(svi_2020_file)
+svi_2020_file = (SVI_Path + '/Massachusetts_SVI_2020.csv')
+svi_2020 =pd.read_csv(svi_2020_file)
 
-# svi_2022_file = (SVI_Path + '/Massachusetts_SVI_2022.csv')
-# svi_2022 =pd.read_csv(svi_2022_file)
+svi_2022_file = (SVI_Path + '/Massachusetts_SVI_2022.csv')
+svi_2022 =pd.read_csv(svi_2022_file)
 
 
 
