@@ -5,129 +5,150 @@ import geopandas as gpd
 from shapely.geometry import Point  # Import the Point class
 
 ## City of Boston Bike Data
+
+bikeridership_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston'
 #2016
-bikeridership_2016_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2016'
 
-bikeridership_boston_2016_summer_file=(bikeridership_2016_path+'/bikeridership_boston_2016_summer_georeferenced.csv')
-bikeridership_boston_2016_summer=pd.read_csv(bikeridership_boston_2016_summer_file)
+bike_tract_2016_summer_file=(bikeridership_path+'/bike_tract_2016_summer.csv')
+bike_tract_2016_summer=pd.read_csv(bike_tract_2016_summer_file)
 
-bikeridership_boston_2016_fall_file=(bikeridership_2016_path+'/bikeridership_boston_2016_fall_georeferenced.csv')
-bikeridership_boston_2016_fall=pd.read_csv(bikeridership_boston_2016_fall_file)
+bike_tract_2016_fall_file=(bikeridership_path+'/bike_tract_2016_fall.csv')
+bike_tract_2016_fall=pd.read_csv(bike_tract_2016_fall_file)
 
 #2017
-bikeridership_2017_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2017'
 
-bikeridership_boston_2017_fall_file=(bikeridership_2017_path+'/bikeridership_boston_2017_fall_georeferenced.csv')
-bikeridership_boston_2017_fall=pd.read_csv(bikeridership_boston_2017_fall_file)
+bike_tract_2017_fall_file=(bikeridership_path+'/bike_tract_2017_fall.csv')
+bike_tract_2017_fall=pd.read_csv(bike_tract_2017_fall_file)
 
 #2018
-bikeridership_2018_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2018'
 
-bikeridership_boston_2018_summer_file=(bikeridership_2018_path+'/bikeridership_boston_2018_summer_georeferenced.csv')
-bikeridership_boston_2018_summer=pd.read_csv(bikeridership_boston_2018_summer_file)
+bike_tract_2018_summer_file=(bikeridership_path+'/bike_tract_2018_summer.csv')
+bike_tract_2018_summer=pd.read_csv(bike_tract_2018_summer_file)
 
-bikeridership_boston_2018_fall_file=(bikeridership_2018_path+'/bikeridership_boston_2018_fall_georeferenced.csv')
-bikeridership_boston_2018_fall=pd.read_csv(bikeridership_boston_2018_fall_file)
+bike_tract_2018_fall_file=(bikeridership_path+'/bike_tract_2018_fall.csv')
+bike_tract_2018_fall=pd.read_csv(bike_tract_2018_fall_file)
 
 #2019
-bikeridership_2019_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2019'
 
-bikeridership_boston_2019_summer_file=(bikeridership_2019_path+'/bikeridership_boston_2019_summer_georeferenced.csv')
-bikeridership_boston_2019_summer=pd.read_csv(bikeridership_boston_2019_summer_file)
+bike_tract_2019_summer_file=(bikeridership_path+'/bike_tract_2019_summer.csv')
+bike_tract_2019_summer=pd.read_csv(bike_tract_2019_summer_file)
 
-bikeridership_boston_2019_fall_file=(bikeridership_2019_path+'/bikeridership_boston_2019_fall_georeferenced.csv')
-bikeridership_boston_2019_fall=pd.read_csv(bikeridership_boston_2019_fall_file)
+bike_tract_2019_fall_file=(bikeridership_path+'/bike_tract_2019_fall.csv')
+bike_tract_2019_fall=pd.read_csv(bike_tract_2019_fall_file)
 
 #2020
-bikeridership_2020_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2020'
 
-bikeridership_boston_2020_summer_file=(bikeridership_2020_path+'/bikeridership_boston_2020_summer_georeferenced.csv')
-bikeridership_boston_2020_summer=pd.read_csv(bikeridership_boston_2020_summer_file)
+bike_tract_2020_summer_file=(bikeridership_path+'/bike_tract_2020_summer.csv')
+bike_tract_2020_summer=pd.read_csv(bike_tract_2020_summer_file)
 
-bikeridership_boston_2020_fall_file=(bikeridership_2020_path+'/bikeridership_boston_2020_fall_georeferenced.csv')
-bikeridership_boston_2020_fall=pd.read_csv(bikeridership_boston_2020_fall_file)
+bike_tract_2020_fall_file=(bikeridership_path+'/bike_tract_2020_fall.csv')
+bike_tract_2020_fall=pd.read_csv(bike_tract_2020_fall_file)
 
-bikeridership_boston_2020_spring_file=(bikeridership_2020_path+'/bikeridership_boston_2020_spring_georeferenced.csv')
-bikeridership_boston_2020_spring=pd.read_csv(bikeridership_boston_2020_spring_file)
+bike_tract_2020_spring_file=(bikeridership_path+'/bike_tract_2020_spring.csv')
+bike_tract_2020_spring=pd.read_csv(bike_tract_2020_spring_file)
 
-bikeridership_boston_2020_winter_file=(bikeridership_2020_path+'/bikeridership_boston_2020_winter_georeferenced.csv')
-bikeridership_boston_2020_winter=pd.read_csv(bikeridership_boston_2020_winter_file)
+bike_tract_2020_winter_file=(bikeridership_path+'/bike_tract_2020_winter.csv')
+bike_tract_2020_winter=pd.read_csv(bike_tract_2020_winter_file)
 
 #2021
-bikeridership_2021_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2021'
 
-bikeridership_boston_2021_summer_file=(bikeridership_2021_path+'/bikeridership_boston_2021_summer_georeferenced.csv')
-bikeridership_boston_2021_summer=pd.read_csv(bikeridership_boston_2021_summer_file)
+bike_tract_2021_summer_file=(bikeridership_path+'/bike_tract_2021_summer.csv')
+bike_tract_2021_summer=pd.read_csv(bike_tract_2021_summer_file)
 
-bikeridership_boston_2021_fall_file=(bikeridership_2021_path+'/bikeridership_boston_2021_fall_georeferenced.csv')
-bikeridership_boston_2021_fall=pd.read_csv(bikeridership_boston_2021_fall_file)
+bike_tract_2021_fall_file=(bikeridership_path+'/bike_tract_2021_fall.csv')
+bike_tract_2021_fall=pd.read_csv(bike_tract_2021_fall_file)
 
-bikeridership_boston_2021_spring_file=(bikeridership_2021_path+'/bikeridership_boston_2021_spring_georeferenced.csv')
-bikeridership_boston_2021_spring=pd.read_csv(bikeridership_boston_2021_spring_file)
+bike_tract_2021_spring_file=(bikeridership_path+'/bike_tract_2021_spring.csv')
+bike_tract_2021_spring=pd.read_csv(bike_tract_2021_spring_file)
 
-bikeridership_boston_2021_winter_file=(bikeridership_2021_path+'/bikeridership_boston_2021_winter_georeferenced.csv')
-bikeridership_boston_2021_winter=pd.read_csv(bikeridership_boston_2021_winter_file)
+bike_tract_2021_winter_file=(bikeridership_path+'/bike_tract_2021_winter.csv')
+bike_tract_2021_winter=pd.read_csv(bike_tract_2021_winter_file)
 
 #2022
-bikeridership_2022_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2022'
 
-bikeridership_boston_2022_summer_file=(bikeridership_2022_path+'/bikeridership_boston_2022_summer_georeferenced.csv')
-bikeridership_boston_2022_summer=pd.read_csv(bikeridership_boston_2022_summer_file)
+bike_tract_2022_summer_file=(bikeridership_path+'/bike_tract_2022_summer.csv')
+bike_tract_2022_summer=pd.read_csv(bike_tract_2022_summer_file)
 
-bikeridership_boston_2022_fall_file=(bikeridership_2022_path+'/bikeridership_boston_2022_fall_georeferenced.csv')
-bikeridership_boston_2022_fall=pd.read_csv(bikeridership_boston_2022_fall_file)
+bike_tract_2022_fall_file=(bikeridership_path+'/bike_tract_2022_fall.csv')
+bike_tract_2022_fall=pd.read_csv(bike_tract_2022_fall_file)
 
-bikeridership_boston_2022_spring_file=(bikeridership_2022_path+'/bikeridership_boston_2022_spring_georeferenced.csv')
-bikeridership_boston_2022_spring=pd.read_csv(bikeridership_boston_2022_spring_file)
+bike_tract_2022_spring_file=(bikeridership_path+'/bike_tract_2022_spring.csv')
+bike_tract_2022_spring=pd.read_csv(bike_tract_2022_spring_file)
 
-bikeridership_boston_2022_winter_file=(bikeridership_2022_path+'/bikeridership_boston_2022_winter_georeferenced.csv')
-bikeridership_boston_2022_winter=pd.read_csv(bikeridership_boston_2022_winter_file)
+bike_tract_2022_winter_file=(bikeridership_path+'/bike_tract_2022_winter.csv')
+bike_tract_2022_winter=pd.read_csv(bike_tract_2022_winter_file)
 
 #2023
-bikeridership_2023_path = '/mnt/c/Users/court/Documents/d3m_project/data/bikeridership/bikeridership_boston/bikeridership_boston_2023'
 
-bikeridership_boston_2023_summer_file=(bikeridership_2023_path+'/bikeridership_boston_2023_summer_georeferenced.csv')
-bikeridership_boston_2023_summer=pd.read_csv(bikeridership_boston_2023_summer_file)
+bike_tract_2023_summer_file=(bikeridership_path+'/bike_tract_2023_summer.csv')
+bike_tract_2023_summer=pd.read_csv(bike_tract_2023_summer_file)
 
-bikeridership_boston_2023_fall_file=(bikeridership_2023_path+'/bikeridership_boston_2023_fall_georeferenced.csv')
-bikeridership_boston_2023_fall=pd.read_csv(bikeridership_boston_2023_fall_file)
+bike_tract_2023_fall_file=(bikeridership_path+'/bike_tract_2023_fall.csv')
+bike_tract_2023_fall=pd.read_csv(bike_tract_2023_fall_file)
 
-bikeridership_boston_2023_spring_file=(bikeridership_2023_path+'/bikeridership_boston_2023_spring_georeferenced.csv')
-bikeridership_boston_2023_spring=pd.read_csv(bikeridership_boston_2023_spring_file)
+bike_tract_2023_spring_file=(bikeridership_path+'/bike_tract_2023_spring.csv')
+bike_tract_2023_spring=pd.read_csv(bike_tract_2023_spring_file)
 
 ## EPA AQ Data
-#CO
+##only need CO, NO2, and Ozone for project
+#CO - NEED
 
 aq_co_path ='/mnt/c/Users/court/Documents/d3m_project/data/epa_aq_data/epa_aq_data_CO'
 
-aq_co_2016_file=(aq_co_path+'/epa_aq_data_CO_2016_georeferenced.csv')
+aq_co_2016_file=(aq_co_path+'/epa_aq_data_CO_2016.csv')
 aq_co_2016 = pd.read_csv(aq_co_2016_file)
 
-aq_co_2017_file=(aq_co_path+'/epa_aq_data_CO_2017_georeferenced.csv')
+aq_co_2017_file=(aq_co_path+'/epa_aq_data_CO_2017.csv')
 aq_co_2017 = pd.read_csv(aq_co_2017_file)
 
-aq_co_2018_file=(aq_co_path+'/epa_aq_data_CO_2018_georeferenced.csv')
+aq_co_2018_file=(aq_co_path+'/epa_aq_data_CO_2018.csv')
 aq_co_2018 = pd.read_csv(aq_co_2018_file)
 
-aq_co_2019_file=(aq_co_path+'/epa_aq_data_CO_2019_georeferenced.csv')
+aq_co_2019_file=(aq_co_path+'/epa_aq_data_CO_2019.csv')
 aq_co_2019 = pd.read_csv(aq_co_2019_file)
 
-aq_co_2020_file=(aq_co_path+'/epa_aq_data_CO_2020_georeferenced.csv')
+aq_co_2020_file=(aq_co_path+'/epa_aq_data_CO_2020.csv')
 aq_co_2020 = pd.read_csv(aq_co_2020_file)
 
-aq_co_2021_file=(aq_co_path+'/epa_aq_data_CO_2021_georeferenced.csv')
+aq_co_2021_file=(aq_co_path+'/epa_aq_data_CO_2021.csv')
 aq_co_2021 = pd.read_csv(aq_co_2021_file)
 
-aq_co_2022_file=(aq_co_path+'/epa_aq_data_CO_2022_georeferenced.csv')
+aq_co_2022_file=(aq_co_path+'/epa_aq_data_CO_2022.csv')
 aq_co_2022 = pd.read_csv(aq_co_2022_file)
 
-aq_co_2023_file=(aq_co_path+'/epa_aq_data_CO_2023_georeferenced.csv')
+aq_co_2023_file=(aq_co_path+'/epa_aq_data_CO_2023.csv')
 aq_co_2023 = pd.read_csv(aq_co_2023_file)
 
-aq_co_2024_file=(aq_co_path+'/epa_aq_data_CO_2024_georeferenced.csv')
+aq_co_2024_file=(aq_co_path+'/epa_aq_data_CO_2024.csv')
 aq_co_2024 = pd.read_csv(aq_co_2024_file)
 
-#NO2
+aq_co_2016_tract_file=(aq_co_path+'/epa_aq_CO_2016_tract.csv')
+aq_co_tract_2016 = pd.read_csv(aq_co_2016_tract_file)
+
+aq_co_2017_tract_file = (aq_co_path + '/epa_aq_CO_2017_tract.csv')
+aq_co_tract_2017 = pd.read_csv(aq_co_2017_tract_file)
+
+aq_co_2018_tract_file = (aq_co_path + '/epa_aq_CO_2018_tract.csv')
+aq_co_tract_2018 = pd.read_csv(aq_co_2018_tract_file)
+
+aq_co_2019_tract_file = (aq_co_path + '/epa_aq_CO_2019_tract.csv')
+aq_co_tract_2019 = pd.read_csv(aq_co_2019_tract_file)
+
+aq_co_2020_tract_file = (aq_co_path + '/epa_aq_CO_2020_tract.csv')
+aq_co_tract_2020 = pd.read_csv(aq_co_2020_tract_file)
+
+aq_co_2021_tract_file = (aq_co_path + '/epa_aq_CO_2021_tract.csv')
+aq_co_tract_2021 = pd.read_csv(aq_co_2021_tract_file)
+
+aq_co_2022_tract_file = (aq_co_path + '/epa_aq_CO_2022_tract.csv')
+aq_co_tract_2022 = pd.read_csv(aq_co_2022_tract_file)
+
+aq_co_2023_tract_file = (aq_co_path + '/epa_aq_CO_2023_tract.csv')
+aq_co_tract_2023 = pd.read_csv(aq_co_2023_tract_file)
+
+aq_co_2024_tract_file = (aq_co_path + '/epa_aq_CO_2024_tract.csv')
+aq_co_tract_2024 = pd.read_csv(aq_co_2024_tract_file)
+#NO2 - NEED
 aq_NO2_path = '/mnt/c/Users/court/Documents/d3m_project/data/epa_aq_data/epa_aq_data_NO2'
 
 aq_NO2_2016_file = (aq_NO2_path + '/epa_aq_data_NO2_2016_georeferenced.csv')
@@ -157,7 +178,7 @@ aq_NO2_2023 = pd.read_csv(aq_NO2_2023_file)
 aq_NO2_2024_file = (aq_NO2_path + '/epa_aq_data_NO2_2024_georeferenced.csv')
 aq_NO2_2024 = pd.read_csv(aq_NO2_2024_file)
 
-#Ozone
+#Ozone - NEED
 aq_ozone_path = '/mnt/c/Users/court/Documents/d3m_project/data/epa_aq_data/epa_aq_data_ozone'
 
 aq_ozone_2016_file = (aq_ozone_path + '/epa_aq_data_ozone_2016_georeferenced.csv')
