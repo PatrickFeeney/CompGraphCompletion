@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, WhiteKernel
 
-from data_load_2 import load_svi
+import data_load_svi
 
 
 def fit_gp(X_train: np.ndarray, y_train: np.ndarray):
@@ -37,8 +37,8 @@ def vis_linspace(X: np.ndarray):
     return np.linspace(X.min() - X_range * 0.1, X.max() + X_range * 0.1, 200)
 
 
-def gp_fname(dataset1, col_name1, dataset2, col_name2):
-    return f"{dataset1}_{col_name1}_{dataset2}_{col_name2}.dump"
+def comparison_fname(dataset1, col_name1, dataset2, col_name2, extension):
+    return f"{dataset1}_{col_name1}_{dataset2}_{col_name2}.{extension}"
 
 
 def save_gp(gp: GaussianProcessRegressor, fname: str):
@@ -50,7 +50,7 @@ def load_gp(fname: str):
     return pickle.load(open(Path("./models") / Path(fname), "rb"))
 
 
-def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred):
+def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, fname):
     plt.scatter(X, y, label="Observations")
     plt.plot(X_lin, mean_pred, label="Mean prediction")
     plt.fill_between(
@@ -64,31 +64,38 @@ def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred):
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     _ = plt.title("Gaussian Process Regression")
-    plt.savefig(f"{xlabel}_{ylabel}.png")
+    plt.savefig(Path("./plots") / Path(fname))
     plt.close()
 
 
 if __name__ == "__main__":
-    df = load_svi()
+    df = data_load_svi.load_svi()
     dataset1 = "svi"
     col_name1 = "minority"
     X = np.expand_dims(df[col_name1].to_numpy(), axis=1)
-    for col_name in ["pov", "pov150"]:
+    for col_name2 in ["pov", "pov150"]:
         dataset2 = "svi"
-        col_name2 = col_name
-        y = df[col_name].to_numpy()
+        y = df[col_name2].to_numpy()
         # For each edge of interest, grab subset of rows such that each side of the edge has data
         mask = np.logical_not(np.logical_or(np.isnan(X)[:, 0], np.isnan(y)))
         mask_X = X[mask, :]
         mask_y = y[mask]
         # Reshape data so that each row indexes a unique combo of location and time
         # Divide data into train and test based on time
+
         # Fit GP on the subset (grid search with validation set for kernel hyperparameters?)
-        gp = fit_gp(mask_X, mask_y)
+        gp_fname = comparison_fname(dataset1, col_name1, dataset2, col_name2, "dump")
+        if not (Path("./models") / Path(gp_fname)).exists():
+            gp = fit_gp(mask_X, mask_y)
+            save_gp(gp, gp_fname)
         # or load the GP from a previous run
-        # Save predictions and pickle model
+        else:
+            gp = load_gp(gp_fname)
+
+        # Output predictions
         X_lin = vis_linspace(mask_X)
         mean_pred, std_pred = pred_gp(X_lin[:, None], gp)
-        save_gp(gp, gp_fname(dataset1, col_name1, dataset2, col_name2))
         # Visualize GP
-        vis_gp(mask_X, mask_y, "Minority %", col_name, X_lin, mean_pred, std_pred)
+        vis_gp(mask_X, mask_y, data_load_svi.col_names_to_vis_names[col_name1],
+               data_load_svi.col_names_to_vis_names[col_name2], X_lin, mean_pred, std_pred,
+               comparison_fname(dataset1, col_name1, dataset2, col_name2, "png"))
