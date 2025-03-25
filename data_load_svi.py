@@ -49,7 +49,7 @@ col_names_to_vis_names = {
 }
 
 
-def load_svi():
+def load():
     root_path = Path("data/SocialVulnerabilityIndex")
     years = [2000, 2010, 2014, 2016, 2018, 2020, 2022]
 
@@ -79,7 +79,3 @@ def col_intersection(fpaths):
             col_names_set = col_names_set & set(df.columns)
     col_names = list(col_names_set)
     print(col_names)
-
-
-if __name__ == "__main__":
-    load_svi()

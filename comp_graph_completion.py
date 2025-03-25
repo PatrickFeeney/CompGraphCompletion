@@ -3,9 +3,11 @@ import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, WhiteKernel
 
+import data_load_aq
 import data_load_svi
 
 
@@ -68,19 +70,34 @@ def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, fname):
     plt.close()
 
 
+col_names_to_vis_names = {
+    **data_load_svi.col_names_to_vis_names,
+    **data_load_aq.col_names_to_vis_names,
+}
+
+
 if __name__ == "__main__":
-    df = data_load_svi.load_svi()
-    dataset1 = "svi"
-    col_name1 = "minority"
-    X = np.expand_dims(df[col_name1].to_numpy(), axis=1)
-    for col_name2 in ["pov", "pov150"]:
-        dataset2 = "svi"
-        y = df[col_name2].to_numpy()
+    df_dict = {
+        "svi": data_load_svi.load(),
+        "aq": data_load_aq.load(),
+    }
+    experiments = [
+        ("svi", "minority", "svi", "pov"),
+        ("svi", "minority", "svi", "pov150"),
+        ("svi", "minority", "aq", "co"),
+    ]
+    for experiment in experiments:
+        dataset1, col_name1, dataset2, col_name2 = experiment
+        X_df = df_dict[dataset1]
+        y_df = df_dict[dataset2]
+        # Use year and tract to merge then grab columns
+        merge_df = pd.merge(X_df, y_df, on=["year", "tract"])
+        X = np.expand_dims(merge_df[col_name1].to_numpy(), axis=1)
+        y = merge_df[col_name2].to_numpy()
         # For each edge of interest, grab subset of rows such that each side of the edge has data
         mask = np.logical_not(np.logical_or(np.isnan(X)[:, 0], np.isnan(y)))
         mask_X = X[mask, :]
         mask_y = y[mask]
-        # Reshape data so that each row indexes a unique combo of location and time
         # Divide data into train and test based on time
 
         # Fit GP on the subset (grid search with validation set for kernel hyperparameters?)
@@ -96,6 +113,6 @@ if __name__ == "__main__":
         X_lin = vis_linspace(mask_X)
         mean_pred, std_pred = pred_gp(X_lin[:, None], gp)
         # Visualize GP
-        vis_gp(mask_X, mask_y, data_load_svi.col_names_to_vis_names[col_name1],
-               data_load_svi.col_names_to_vis_names[col_name2], X_lin, mean_pred, std_pred,
+        vis_gp(mask_X, mask_y, col_names_to_vis_names[col_name1], col_names_to_vis_names[col_name2],
+               X_lin, mean_pred, std_pred,
                comparison_fname(dataset1, col_name1, dataset2, col_name2, "png"))
