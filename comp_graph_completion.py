@@ -88,10 +88,14 @@ if __name__ == "__main__":
     ]
     for experiment in experiments:
         dataset1, col_name1, dataset2, col_name2 = experiment
-        X_df = df_dict[dataset1]
-        y_df = df_dict[dataset2]
         # Use year and tract to merge then grab columns
-        merge_df = pd.merge(X_df, y_df, on=["year", "tract"])
+        if dataset1 != dataset2:
+            X_df = df_dict[dataset1]
+            y_df = df_dict[dataset2]
+            merge_df = pd.merge(X_df, y_df, on=["year", "tract"])
+        # Otherwise just use the shared dataframe
+        else:
+            merge_df = df_dict[dataset1]
         X = np.expand_dims(merge_df[col_name1].to_numpy(), axis=1)
         y = merge_df[col_name2].to_numpy()
         # For each edge of interest, grab subset of rows such that each side of the edge has data
