@@ -11,7 +11,6 @@ col_names_to_vis_names = {
 def load():
     root_path = Path("data/epa_aq_CO")
     years = list(range(2017, 2025))
-    years.remove(2021)
 
     col_names = ["year", "tract", "co"]
     final_df = pd.DataFrame(columns=col_names)
