@@ -1,14 +1,2 @@
-DONE - Social:
-Minority data and poverty for SVI data
-census tract "FIPS"
-
-TO INTEGRATE BY 3/25 - AQ:
-epa_aq_CO_YEAR_tract.csv maps census tract "GEOID" to nearest sensor "Site ID"
-includes only Boston census tracts
-
-epa_aq_CO_YEAR.csv maps sensor "Site ID" and "Date" to CO2 data "Daily Max 8-hour CO Concentration"
-
-Aggregate by taking mean of year
-
-Bike:
 TODO
+want to chain Bike -> Social -> AQ

@@ -8,6 +8,7 @@ from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import RBF, WhiteKernel
 
 import data_load_aq
+import data_load_bike
 import data_load_svi
 
 
@@ -71,20 +72,30 @@ def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, fname):
 
 
 col_names_to_vis_names = {
-    **data_load_svi.col_names_to_vis_names,
     **data_load_aq.col_names_to_vis_names,
+    **data_load_bike.col_names_to_vis_names,
+    **data_load_svi.col_names_to_vis_names,
+}
+
+
+df_dict = {
+    "aq": data_load_aq.load(),
+    "bike": data_load_bike.load(),
+    "svi": data_load_svi.load(),
 }
 
 
 if __name__ == "__main__":
-    df_dict = {
-        "svi": data_load_svi.load(),
-        "aq": data_load_aq.load(),
-    }
     experiments = [
         ("svi", "minority", "svi", "pov"),
         ("svi", "minority", "svi", "pov150"),
         ("svi", "minority", "aq", "co"),
+        ("bike", "count", "svi", "minority"),
+        ("bike", "count", "svi", "pov"),
+        ("bike", "count", "svi", "pov150"),
+        ("svi", "minority", "bike", "count"),
+        ("svi", "pov", "bike", "count"),
+        ("svi", "pov150"),
     ]
     for experiment in experiments:
         dataset1, col_name1, dataset2, col_name2 = experiment
