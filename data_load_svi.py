@@ -45,7 +45,7 @@ svi_file_to_col_names_to_svi_col = {
 col_names_to_vis_names = {
     "pov": "Percentage Below Poverty",
     "pov150": "Percentage Below 150% Poverty",
-    "minority": "Percentage Nonwhite",
+    "minority": "Percentage Racial & Ethnic Minority",
 }
 
 

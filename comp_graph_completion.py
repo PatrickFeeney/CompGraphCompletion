@@ -1,3 +1,4 @@
+import itertools
 from pathlib import Path
 import pickle
 
@@ -53,7 +54,7 @@ def load_gp(fname: str):
     return pickle.load(open(Path("./models") / Path(fname), "rb"))
 
 
-def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, fname):
+def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, score, fname):
     plt.scatter(X, y, label="Observations")
     plt.plot(X_lin, mean_pred, label="Mean prediction")
     plt.fill_between(
@@ -66,8 +67,8 @@ def vis_gp(X: np.ndarray, y, xlabel, ylabel, X_lin, mean_pred, std_pred, fname):
     plt.legend()
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    _ = plt.title("Gaussian Process Regression")
-    plt.savefig(Path("./plots") / Path(fname))
+    _ = plt.title(f"Test Coef. of Determination: {score:.3f}")
+    plt.savefig(Path("./plots") / Path(fname), bbox_inches='tight')
     plt.close()
 
 
@@ -86,20 +87,19 @@ df_dict = {
 
 
 if __name__ == "__main__":
-    experiments = [
-        ("svi", "minority", "svi", "pov"),
-        ("svi", "minority", "svi", "pov150"),
-        ("svi", "minority", "aq", "co"),
-        ("bike", "count", "svi", "minority"),
-        ("bike", "count", "svi", "pov"),
-        ("bike", "count", "svi", "pov150"),
-        ("svi", "minority", "bike", "count"),
-        ("svi", "pov", "bike", "count"),
+    dataset_and_col = [
+        ("svi", "minority"),
+        ("svi", "pov"),
         ("svi", "pov150"),
+        ("aq", "co"),
+        ("bike", "count"),
     ]
+    experiments = [(*d_c_1, *d_c_2) for d_c_1, d_c_2 in
+                   itertools.permutations(dataset_and_col, r=2)]
+    exp_to_scores = {}
     for experiment in experiments:
         dataset1, col_name1, dataset2, col_name2 = experiment
-        # Use year and tract to merge then grab columns
+        # Use year and tract to merge
         if dataset1 != dataset2:
             X_df = df_dict[dataset1]
             y_df = df_dict[dataset2]
@@ -107,27 +107,50 @@ if __name__ == "__main__":
         # Otherwise just use the shared dataframe
         else:
             merge_df = df_dict[dataset1]
-        X = np.expand_dims(merge_df[col_name1].to_numpy(), axis=1)
-        y = merge_df[col_name2].to_numpy()
         # For each edge of interest, grab subset of rows such that each side of the edge has data
-        mask = np.logical_not(np.logical_or(np.isnan(X)[:, 0], np.isnan(y)))
-        mask_X = X[mask, :]
-        mask_y = y[mask]
-        # Divide data into train and test based on time
+        merge_df = merge_df[["year", col_name1, col_name2]].dropna(axis=0)
+        # Skip rest of loop if not enough overlap
+        if len(merge_df) == 0 or np.all(merge_df["year"] == max(merge_df["year"])):
+            continue
 
-        # Fit GP on the subset (grid search with validation set for kernel hyperparameters?)
+        # Divide data into train and test based on time
+        train_df = merge_df[merge_df["year"] < max(merge_df["year"])]
+        test_df = merge_df[merge_df["year"] == max(merge_df["year"])]
+        # Grab columns of interest
+        X_train = np.expand_dims(train_df[col_name1].to_numpy(), axis=1)
+        X_test = np.expand_dims(test_df[col_name1].to_numpy(), axis=1)
+        y_train = train_df[col_name2].to_numpy()
+        y_test = test_df[col_name2].to_numpy()
+
+        # Fit GP on the train subset
         gp_fname = comparison_fname(dataset1, col_name1, dataset2, col_name2, "dump")
         if not (Path("./models") / Path(gp_fname)).exists():
-            gp = fit_gp(mask_X, mask_y)
+            gp = fit_gp(X_train, y_train)
             save_gp(gp, gp_fname)
         # or load the GP from a previous run
         else:
             gp = load_gp(gp_fname)
 
         # Output predictions
-        X_lin = vis_linspace(mask_X)
+        X_lin = vis_linspace(merge_df[col_name1])
         mean_pred, std_pred = pred_gp(X_lin[:, None], gp)
+        score = gp.score(X_test, y_test)
         # Visualize GP
-        vis_gp(mask_X, mask_y, col_names_to_vis_names[col_name1], col_names_to_vis_names[col_name2],
-               X_lin, mean_pred, std_pred,
+        vis_gp(X_test, y_test, col_names_to_vis_names[col_name1], col_names_to_vis_names[col_name2],
+               X_lin, mean_pred, std_pred, score,
                comparison_fname(dataset1, col_name1, dataset2, col_name2, "png"))
+        # Save score
+        exp_to_scores[experiment] = score
+
+    # Highlight scores greater than 0
+    for exp, score in exp_to_scores.items():
+        if score > 0:
+            dataset1, col_name1, dataset2, col_name2 = exp
+            print(f"{dataset1}_{col_name1}->{dataset2}_{col_name2} = {score}")
+    # What gets printed as of 4/14/25:
+    # svi_minority->svi_pov = 0.44056146329498413
+    # svi_minority->svi_pov150 = 0.4085251814666093
+    # svi_minority->bike_count = 0.06622401563512614
+    # svi_pov->svi_minority = 0.48306124747153356
+    # svi_pov150->svi_minority = 0.44676794127573227
+    # aq_co->bike_count = 0.039877147364709264
